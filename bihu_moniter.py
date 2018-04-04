@@ -142,7 +142,7 @@ def ups_art(userId, accessToken, artId, subjectUserId):
             'User-Agent': 'okhttp/3.4.'
         }
         count = 0
-        while (count < 100):
+        while (count < 10):
             # print 'try comment: ' + str(count)
             requests.packages.urllib3.disable_warnings()
             r = requests.post(url_ups, headers=headers, verify=False)  # headers=headers,
@@ -153,7 +153,11 @@ def ups_art(userId, accessToken, artId, subjectUserId):
 
             if r.json()['res'] == 1:
                 ret = r.json()["resMsg"]
-                logging.warn('>>>>> [+] up https://bihu.com/article/' + artId + ' ' + ret + '\n')
+                logging.warn('>>>>>>>>>> [+] up https://bihu.com/article/' + artId + ', ' + ret)
+                break
+
+            if r.json()['res'] == 0:
+                logging.warn('>>>>>>>>>> Have been voted!')
                 break
             count = count + 1
     except Exception, err:
@@ -174,7 +178,7 @@ def comment_art(userId, accessToken, artId, subjectUserId, content):
         }
 
         count = 0
-        while (count < 100):
+        while (count < 10):
             # print 'try comment: ' + str(count)
             requests.packages.urllib3.disable_warnings()
             r = requests.post(url_comment, headers=headers, verify=False)  # headers=headers,
@@ -185,7 +189,11 @@ def comment_art(userId, accessToken, artId, subjectUserId, content):
 
             if r.json()['res'] == 1:
                 ret = r.json()["resMsg"]
-                logging.warn('>>>>> [+] commet https://bihu.com/article/' + artId + ' ' + ret + '\n')
+                logging.warn('>>>>>>>>>> [+] commet https://bihu.com/article/' + artId + ', ' + ret)
+                break
+
+            if r.json()['res'] == 0:
+                logging.warn('>>>>>>>>>> Have been commented!')
                 break
             count = count + 1
     except:
@@ -255,12 +263,12 @@ def loop_check_article(userid, accesstoken):
                         '***** ['+ bytes(artNum)+'.] userName:' + Target_userName + ', userId:' + bytes(Target_userId) + ', artid:' + bytes(
                             Target_artid) + ', Ups:' + bytes(Target_ups) + ', Up:' + bytes(Target_up) )
                     # up等于0，没点过赞
-                    if Target_up == 0 and Target_ups < 400:
-                        logging.warning('>>>>>>>>>> A new article, up and comment...')
+                    if Target_up == 0 and Target_ups < 300:
+                        logging.warn('>>>>>>>>>> A new article, up and comment...')
 
-                        ups_art(userid, accesstoken, str(Target_artid), Target_userId)
+                        ups_art(userid, accesstoken, str(Target_artid), str(Target_userId))
                         time.sleep(2)
-                        comment_art(userid, accesstoken, str(Target_artid), Target_userId, content)
+                        comment_art(userid, accesstoken, str(Target_artid), str(Target_userId), content)
 
                     artNum = artNum + 1
                 except Exception, e:
