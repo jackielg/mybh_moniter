@@ -53,7 +53,6 @@ FOREGROUND_BLUE = 0x09  # blue.
 FOREGROUND_GREEN = 0x0a  # green.
 FOREGROUND_RED = 0x0c  # red.
 
-
 # get handle
 std_out_handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
 
@@ -158,6 +157,7 @@ def ups_art(userId, accessToken, artId, subjectUserId):
                 break
             count = count + 1
     except Exception, err:
+        print err
         return -1
 
 
@@ -218,6 +218,7 @@ def loginGetAccessToken(phone, password):
             # print r.json()
             return (userid, accesstoken)
         else:
+            logging.warn('##### Login fail ......  ')
             return (-1, -1)
     except:
         return (-1, -1)
@@ -238,29 +239,28 @@ def loop_check_article(userid, accesstoken):
         r = requests.post(url_article, headers=headers, verify=False)
 
         ret = r.json()["resMsg"]
+        logging.warn('***** Analyzing article ......  ')
         if ret == 'success':
             artNum = 0
             while (artNum < 5):
                 try:
-                    logging.warn('***** 分析关注列表中第 ' + bytes(artNum) + ' 篇文章')
-
                     contentlist = r.json()['data']['artList']['list'][artNum]
                     # print contentlist
-                    userName = contentlist['userName']
-                    userId = contentlist['userId']
-                    artid = contentlist['id']
-                    ups = contentlist['ups']
-                    up = contentlist['up']
-
+                    Target_userName = contentlist['userName']
+                    Target_userId = contentlist['userId']
+                    Target_artid = contentlist['id']
+                    Target_ups = contentlist['ups']
+                    Target_up = contentlist['up']
+                    logging.warning(
+                        '***** ['+ bytes(artNum)+'.] userName:' + Target_userName + ', userId:' + bytes(Target_userId) + ', artid:' + bytes(
+                            Target_artid) + ', Ups:' + bytes(Target_ups) + ', Up:' + bytes(Target_up) )
                     # up等于0，没点过赞
-                    if up == 0 and ups < 400:
+                    if Target_up == 0 and Target_ups < 400:
                         logging.warning('>>>>>>>>>> A new article, up and comment...')
-                        logging.warning(
-                            '>>>>>>>>>> userName:' + userName + ', userId:' + bytes(userId) + ', artid:' + bytes(
-                                artid) + ', Ups:' + bytes(ups))
-                        ups_art(userid, accesstoken, str(artid), targetuserId)
+
+                        ups_art(userid, accesstoken, str(Target_artid), Target_userId)
                         time.sleep(2)
-                        comment_art(userid, accesstoken, str(artid), targetuserId, content)
+                        comment_art(userid, accesstoken, str(Target_artid), Target_userId, content)
 
                     artNum = artNum + 1
                 except Exception, e:
@@ -356,7 +356,7 @@ while 1:
     # print 'refresh and moniter....'
     logging.warning('***** Refresh and moniter......')
     # time_stamp = datetime.datetime.now()
-    # print "time_stamp       " + time_stamp.strftime('%Y.%m.%d-%H:%M:%S') 
+    # print "time_stamp       " + time_stamp.strftime('%Y.%m.%d-%H:%M:%S')
     # loop_get_firstups(userid, accesstoken)
     loop_check_article(userid, accesstoken)
     # print 'sleep & wait to refresh...'
