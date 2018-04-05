@@ -90,7 +90,7 @@ def getUserArtList(userId):
     try:
         headers = {
             'device': 'android',
-            'version': '1.0.2',
+            'version': '1.0.7',
             'Content-Length': '0',
             'Accept-Encoding': 'gzip, deflate',
             'Connection': 'close',
@@ -135,14 +135,14 @@ def ups_art(userId, accessToken, artId, subjectUserId):
     try:
         headers = {
             'device': 'android',
-            'version': '1.0.2',
+            'version': '1.0.7',
             'Content-Length': '0',
             'Accept-Encoding': 'gzip, deflate',
             'Connection': 'close',
             'User-Agent': 'okhttp/3.4.'
         }
         count = 0
-        while (count < 10):
+        while (count < 20):
             # print 'try comment: ' + str(count)
             requests.packages.urllib3.disable_warnings()
             r = requests.post(url_ups, headers=headers, verify=False)  # headers=headers,
@@ -170,7 +170,7 @@ def comment_art(userId, accessToken, artId, subjectUserId, content):
     try:
         headers = {
             'device': 'android',
-            'version': '1.0.2',
+            'version': '1.0.7',
             'Content-Length': '0',
             'Accept-Encoding': 'gzip, deflate',
             'Connection': 'close',
@@ -178,7 +178,7 @@ def comment_art(userId, accessToken, artId, subjectUserId, content):
         }
 
         count = 0
-        while (count < 10):
+        while (count < 20):
             # print 'try comment: ' + str(count)
             requests.packages.urllib3.disable_warnings()
             r = requests.post(url_comment, headers=headers, verify=False)  # headers=headers,
@@ -206,7 +206,7 @@ def loginGetAccessToken(phone, password):
     try:
         headers = {
             'device': 'android',
-            'version': '1.0.2',
+            'version': '1.0.7',
             'Content-Length': '0',
             'Accept-Encoding': 'gzip, deflate',
             'Connection': 'close',
@@ -237,7 +237,7 @@ def loop_check_article(userid, accesstoken):
     try:
         headers = {
             'device': 'android',
-            'version': '1.0.2',
+            'version': '1.0.7',
             'Content-Length': '0',
             'Accept-Encoding': 'gzip, deflate',
             'Connection': 'close',
