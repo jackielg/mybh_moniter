@@ -92,9 +92,10 @@ def getUserArtList(userId):
             'device': 'android',
             'version': '1.0.7',
             'Content-Length': '0',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'close',
-            'User-Agent': 'okhttp/3.4.'
+            'Host': 'be01.bihu.com',
+            'Accept-Encoding': 'gzip',
+            'Connection': 'Keep-Alive',
+            'User-Agent': 'okhttp/3.4.1'
         }
 
         requests.packages.urllib3.disable_warnings()
@@ -137,9 +138,10 @@ def ups_art(userId, accessToken, artId, subjectUserId):
             'device': 'android',
             'version': '1.0.7',
             'Content-Length': '0',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'close',
-            'User-Agent': 'okhttp/3.4.'
+            'Host': 'be01.bihu.com',
+            'Accept-Encoding': 'gzip',
+            'Connection': 'Keep-Alive',
+            'User-Agent': 'okhttp/3.4.1'
         }
         count = 0
         while (count < 20):
@@ -172,9 +174,10 @@ def comment_art(userId, accessToken, artId, subjectUserId, content):
             'device': 'android',
             'version': '1.0.7',
             'Content-Length': '0',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'close',
-            'User-Agent': 'okhttp/3.4.'
+            'Host': 'be01.bihu.com',
+            'Accept-Encoding': 'gzip',
+            'Connection': 'Keep-Alive',
+            'User-Agent': 'okhttp/3.4.1'
         }
 
         count = 0
@@ -208,9 +211,10 @@ def loginGetAccessToken(phone, password):
             'device': 'android',
             'version': '1.0.7',
             'Content-Length': '0',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'close',
-            'User-Agent': 'okhttp/3.4.'
+            'Host': 'be01.bihu.com',
+            'Accept-Encoding': 'gzip',
+            'Connection': 'Keep-Alive',
+            'User-Agent': 'okhttp/3.4.1'
         }
         requests.packages.urllib3.disable_warnings()
         r = requests.post(url_login, headers=headers, verify=False)  # headers=headers,
@@ -239,9 +243,10 @@ def loop_check_article(userid, accesstoken):
             'device': 'android',
             'version': '1.0.7',
             'Content-Length': '0',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'close',
-            'User-Agent': 'okhttp/3.4.'
+            'Host': 'be01.bihu.com',
+            'Accept-Encoding': 'gzip',
+            'Connection': 'Keep-Alive',
+            'User-Agent': 'okhttp/3.4.1'
         }
         requests.packages.urllib3.disable_warnings()
         r = requests.post(url_article, headers=headers, verify=False)
@@ -263,7 +268,7 @@ def loop_check_article(userid, accesstoken):
                         '***** ['+ bytes(artNum)+'.] userName:' + Target_userName + ', userId:' + bytes(Target_userId) + ', artid:' + bytes(
                             Target_artid) + ', Ups:' + bytes(Target_ups) + ', Up:' + bytes(Target_up) )
                     # up等于0，没点过赞
-                    if Target_up == 0 and Target_ups < 300:
+                    if Target_up == 0 and Target_ups < 350:
                         logging.warn('>>>>>>>>>> A new article, up and comment...')
 
                         ups_art(userid, accesstoken, str(Target_artid), str(Target_userId))
