@@ -257,9 +257,8 @@ def loop_check_article(userid, accesstoken):
         logging.warn('***** Analyzing article ......  ')
         if ret == 'success':
             artNum = 0
-            while (artNum < 5):
+            while (artNum < 10):
                 try:
-                    artNum = artNum + 1
                     contentlist = r.json()['data']['artList']['list'][artNum]
                     # print contentlist
                     Target_userName = contentlist['userName']
@@ -271,6 +270,7 @@ def loop_check_article(userid, accesstoken):
                     logging.warning(
                         '***** ['+ bytes(artNum)+'.] userName:' + Target_userName + ', userId:' + bytes(Target_userId) + ', artid:' + bytes(
                             Target_artid) + ', Ups:' + bytes(Target_ups) + ', Up:' + bytes(Target_up) )
+                    artNum = artNum + 1
                     # 防骗
                     if "绞杀" in Target_title:
                         continue
