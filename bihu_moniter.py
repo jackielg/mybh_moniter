@@ -6,8 +6,10 @@ import logging
 import os
 import re
 import time
-
 import requests
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 # from requests.packages.urllib3.exceptions import InsecureRequestWarning
 #
@@ -257,25 +259,32 @@ def loop_check_article(userid, accesstoken):
             artNum = 0
             while (artNum < 5):
                 try:
+                    artNum = artNum + 1
                     contentlist = r.json()['data']['artList']['list'][artNum]
                     # print contentlist
                     Target_userName = contentlist['userName']
                     Target_userId = contentlist['userId']
                     Target_artid = contentlist['id']
+                    Target_title = contentlist['title']
                     Target_ups = contentlist['ups']
                     Target_up = contentlist['up']
                     logging.warning(
                         '***** ['+ bytes(artNum)+'.] userName:' + Target_userName + ', userId:' + bytes(Target_userId) + ', artid:' + bytes(
                             Target_artid) + ', Ups:' + bytes(Target_ups) + ', Up:' + bytes(Target_up) )
+                    # 防骗
+                    if "绞杀" in Target_title:
+                        continue
+                    if "机器" in Target_title:
+                        continue
+                    if "删" in Target_title:
+                        continue
                     # up等于0，没点过赞
-                    if Target_up == 0 and Target_ups < 350:
+                    if Target_up == 0 and Target_ups < 300:
                         logging.warn('>>>>>>>>>> A new article, up and comment...')
 
                         ups_art(userid, accesstoken, str(Target_artid), str(Target_userId))
                         time.sleep(2)
                         comment_art(userid, accesstoken, str(Target_artid), str(Target_userId), content)
-
-                    artNum = artNum + 1
                 except Exception, e:
                     print e
                     continue
