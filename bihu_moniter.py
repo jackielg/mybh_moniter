@@ -278,13 +278,17 @@ def loop_check_article(userid, accesstoken):
                         continue
                     if "删" in Target_title:
                         continue
+                    if "不" in Target_title:
+                        continue
+                    if "别" in Target_title:
+                        continue    
                     # up等于0，没点过赞
                     if Target_up == 0 and Target_ups < 300:
                         logging.warn('>>>>>>>>>> A new article, up and comment...')
 
                         ups_art(userid, accesstoken, str(Target_artid), str(Target_userId))
                         time.sleep(2)
-                        comment_art(userid, accesstoken, str(Target_artid), str(Target_userId), content)
+                        # comment_art(userid, accesstoken, str(Target_artid), str(Target_userId), content)
                 except Exception, e:
                     print e
                     continue
